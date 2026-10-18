@@ -1,10 +1,71 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>سوق الماشية - عطبرة</title>
-<style>body{font-family:system-ui;background:#fef9e7;margin:0}header{background:#1a5d1a;color:white;padding:25px;text-align:center}.card{background:white;margin:12px;padding:16px;border-radius:16px;box-shadow:0 2px 8px #0002}.btn{background:#1a5d1a;color:white;padding:14px;border:none;border-radius:12px;width:100%;font-size:18px;font-weight:bold}input,select,textarea{width:100%;padding:13px;margin:6px 0;border:1px solid #ccc;border-radius:12px}</style>
-</head><body>
-<header><h1>🐑 سوق الماشية - عطبرة 🐪</h1><p>بيع وشراء - River Nile</p></header>
-<div class="card"><h3>➕ أضف بهيمتك</h3><select><option>خروف</option><option>جمل</option><option>بقرة</option><option>ماعز</option></select><input placeholder="العمر"><input placeholder="السعر"><input placeholder="رقم واتسابك"><button class="btn">نشر الآن ✅</button></div>
-<div class="card"><h3>🐑 خروف بلدي - 350,000 جنيه</h3><p>📍 عطبرة</p><button class="btn">💬 واتساب</button></div>
-<div class="card"><h3>🐪 جمل حر - 1,200,000 جنيه</h3><p>📍 الدامر</p><button class="btn">💬 واتساب</button></div>
-</body></html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سوق الماشية - عطبرة</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>body{font-family:'Tajawal',sans-serif}</style>
+</head>
+<body class="bg-[#f6f7f0]">
+<header class="bg-[#1a5c2a] text-white p-4 sticky top-0 z-50">
+<div class="max-w-6xl mx-auto flex justify-between items-center">
+<h1 class="font-black text-[20px]">🐄 سوق الماشية | عطبرة</h1>
+<button onclick="addModal.classList.remove('hidden')" class="bg-[#ffcc00] text-black px-4 py-2 rounded-full font-bold">+ أضف</button>
+</div>
+</header>
+<div class="max-w-6xl mx-auto p-3">
+<div class="grid grid-cols-4 gap-2 mb-3">
+<button onclick="filterCat('')" class="bg-[#1a5c2a] text-white p-3 rounded-xl font-bold">الكل</button>
+<button onclick="filterCat('غنم')" class="bg-white p-3 rounded-xl font-bold">🐑 غنم</button>
+<button onclick="filterCat('بقر')" class="bg-white p-3 rounded-xl font-bold">🐄 بقر</button>
+<button onclick="filterCat('إبل')" class="bg-white p-3 rounded-xl font-bold">🐪 إبل</button>
+</div>
+<input id="search" oninput="render()" placeholder="ابحث خروف حمر..." class="w-full bg-white border-2 rounded-2xl p-4 mb-3">
+<div id="products" class="grid grid-cols-1 gap-3"></div>
+</div>
+<div id="addModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+<div class="bg-white rounded-[24px] p-6 w-full max-w-md">
+<h2 class="font-black text-xl mb-3">أضف عرض</h2>
+<input id="pTitle" placeholder="مثال: خروف حمر كبير" class="w-full border-2 p-3 rounded-xl mb-2">
+<div class="flex gap-2 mb-2">
+<input id="pPrice" type="number" placeholder="السعر" class="flex-1 border-2 p-3 rounded-xl">
+<select id="pCat" class="flex-1 border-2 p-3 rounded-xl"><option>غنم</option><option>بقر</option><option>إبل</option><option>ماعز</option></select>
+</div>
+<input id="pPhone" placeholder="واتساب 09xx" class="w-full border-2 p-3 rounded-xl mb-2">
+<input id="pLoc" placeholder="المكان عطبرة" class="w-full border-2 p-3 rounded-xl mb-3">
+<button onclick="addProduct()" class="w-full bg-[#1a5c2a] text-white p-4 rounded-xl font-black">نشر ✅</button>
+<button onclick="addModal.classList.add('hidden')" class="w-full mt-2 bg-gray-100 p-3 rounded-xl">إلغاء</button>
+</div>
+</div>
+<script>
+let currentCat='';
+let products=JSON.parse(localStorage.getItem('souq_v2')||'null')||[
+{title:'خروف حمر - سن لبن - 10 راس',price:1800000,cat:'غنم',phone:'0912345678',loc:'عطبرة',img:'🐑'},
+{title:'بقرة حليب 20 رطل',price:3500000,cat:'بقر',phone:'0912345678',loc:'الدامر',img:'🐄'},
+{title:'جمل حر سباق',price:7200000,cat:'إبل',phone:'0912345678',loc:'بربر',img:'🐪'},
+{title:'5 ضان بلدي',price:950000,cat:'غنم',phone:'0912345678',loc:'عطبرة',img:'🐑'},
+{title:'عجل تسمين',price:1200000,cat:'بقر',phone:'0912345678',loc:'عطبرة',img:'🐮'},
+{title:'ماعز سعانين',price:450000,cat:'ماعز',phone:'0912345678',loc:'عطبرة',img:'🐐'}
+];
+function filterCat(c){currentCat=c;render();}
+function render(){
+const s=search.value.toLowerCase();
+const box=document.getElementById('products');box.innerHTML='';
+products.filter(p=>(!currentCat||p.cat==currentCat)&&(!s||p.title.toLowerCase().includes(s))).forEach(p=>{
+box.innerHTML+=`<div class="bg-white rounded-[20px] shadow border p-4"><div class="bg-[#f6f7f0] rounded-2xl h-28 flex items-center justify-center text-5xl mb-2">${p.img}</div><div class="flex justify-between"><span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-bold">${p.cat}</span><span class="text-gray-400 text-xs">${p.loc}</span></div><h3 class="font-bold mt-1">${p.title}</h3><p class="text-[#1a5c2a] font-black text-[20px]">${p.price.toLocaleString()} جنيه</p><a href="https://wa.me/249${p.phone.replace(/^0/,'')}?text=عايز ${encodeURIComponent(p.title)}" target="_blank" class="mt-2 block bg-[#25D366] text-white text-center p-3 rounded-xl font-bold">واتساب 📲</a></div>`;
+});
+}
+function addProduct(){
+const t=pTitle.value.trim();const pr=parseInt(pPrice.value);const c=pCat.value;const ph=pPhone.value.trim();const l=pLoc.value.trim();
+if(!t||!pr||!ph)return alert('اكمل البيانات');
+let emoji='🐑';if(c=='بقر')emoji='🐄';if(c=='إبل')emoji='🐪';if(c=='ماعز')emoji='🐐';
+products.unshift({title:t,price:pr,cat:c,phone:ph,loc:l||'عطبرة',img:emoji});
+localStorage.setItem('souq_v2',JSON.stringify(products));
+addModal.classList.add('hidden');render();
+}
+render();
+</script>
+</body>
+</html>
