@@ -1,0 +1,14 @@
+{
+  "name": "سوق الماشية - كل السودان",
+  "short_name": "سوق الماشية",
+  "start_url": "/Souq-almasihia/",
+  "scope": "/Souq-almasihia/",
+  "display": "standalone",
+  "background_color": "#166534",
+  "theme_color": "#166534",
+  "icons": [{
+    "src": "https://cdn-icons-png.flaticon.com/512/1998/1998610.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }]
+}
