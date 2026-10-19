@@ -1,2 +1,118 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>سوق الماشية - كردفان وعطبرة - 0112424044</title><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet"><style>body{font-family:'Tajawal',sans-serif}</style></head><body class="bg-[#f6f7f0]"><header class="bg-[#1a5c2a] text-white p-3 sticky top-0 z-50"><div class="max-w-6xl mx-auto flex justify-between items-center"><div><h1 class="font-black">🐄 سوق الماشية</h1><p class="text-[11px]">كردفان - الأبيض - عطبرة | 0112424044</p></div><button onclick="addModal.classList.remove('hidden')" class="bg-[#ffcc00] text-black px-4 py-2 rounded-full font-black">+ بيع</button></div></header><div class="max-w-6xl mx-auto p-3"><div class="bg-white p-3 rounded-2xl shadow mb-3 flex justify-between items-center"><span class="font-black text-sm">📞 0112424044 - بنكك وفوري</span><a href="https://wa.me/249112424044" class="bg-[#25D366] text-white px-4 py-2 rounded-full font-bold text-sm">واتساب</a></div><div class="bg-white p-3 rounded-2xl shadow mb-3"><div class="flex gap-2 mb-2 overflow-auto"><button onclick="filterLoc('')" class="bg-black text-white px-4 py-2 rounded-full font-bold text-sm">الكل</button><button onclick="filterLoc('كردفان')" class="bg-gray-100 px-4 py-2 rounded-full font-bold text-sm">كردفان</button><button onclick="filterLoc('عطبرة')" class="bg-gray-100 px-4 py-2 rounded-full font-bold text-sm">عطبرة</button><button onclick="filterLoc('الأبيض')" class="bg-gray-100 px-4 py-2 rounded-full font-bold text-sm">الأبيض</button></div><div class="flex gap-2"><button onclick="filterCat('')" class="flex-1 bg-[#1a5c2a] text-white p-2 rounded-xl font-bold text-sm">الكل</button><button onclick="filterCat('غنم')" class="flex-1 bg-white border p-2 rounded-xl font-bold text-sm">🐑 غنم</button><button onclick="filterCat('بقر')" class="flex-1 bg-white border p-2 rounded-xl font-bold text-sm">🐄 بقر</button><button onclick="filterCat('إبل')" class="flex-1 bg-white border p-2 rounded-xl font-bold text-sm">🐪 إبل</button></div></div><input id="search" oninput="render()" placeholder="ابحث كردفاني، عطبراوي..." class="w-full bg-white border-2 rounded-2xl p-4 mb-3"><div id="products" class="grid grid-cols-1 gap-3"></div></div><div id="addModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50"><div class="bg-white rounded-2xl p-5 w-full max-w-md"><h2 class="font-black mb-2">أضف بهيمة - 0112424044</h2><input id="pTitle" placeholder="غنم كردفاني 20 راس" class="w-full border-2 p-3 rounded-xl mb-2"><div class="flex gap-2 mb-2"><input id="pPrice" type="number" placeholder="السعر" class="flex-1 border-2 p-3 rounded-xl"><select id="pCat" class="flex-1 border-2 p-3 rounded-xl"><option>غنم</option><option>بقر</option><option>إبل</option><option>ماعز</option></select></div><div class="flex gap-2 mb-2"><input id="pPhone" value="0112424044" class="flex-1 border-2 p-3 rounded-xl bg-yellow-50 font-bold"><select id="pLoc" class="flex-1 border-2 p-3 rounded-xl"><option>كردفان</option><option>الأبيض</option><option>النهود</option><option>عطبرة</option></select></div><button onclick="addProduct()" class="w-full bg-[#1a5c2a] text-white p-4 rounded-xl font-black">نشر ✅</button><button onclick="addModal.classList.add('hidden')" class="w-full mt-2 bg-gray-100 p-3 rounded-xl">إلغاء</button></div></div><script>let currentCat='',currentLoc='';const MY_PHONE='0112424044';let products=[{title:'غنم كردفاني أصيل - 30 راس',price:2200000,cat:'غنم',phone:MY_PHONE,loc:'كردفان',img:'🐑',badge:'كردفان 🔥'},{title:'خرفان الأبيض سن لبن',price:1950000,cat:'غنم',phone:MY_PHONE,loc:'الأبيض',img:'🐑',badge:'الأبيض'},{title:'جمال كردفان حرة',price:8500000,cat:'إبل',phone:MY_PHONE,loc:'كردفان',img:'🐪',badge:'كردفان'},{title:'بقر حلوب النهود',price:3800000,cat:'بقر',phone:MY_PHONE,loc:'النهود',img:'🐄',badge:'النهود'},{title:'خروف عطبراوي فاخر',price:1800000,cat:'غنم',phone:MY_PHONE,loc:'عطبرة',img:'🐑',badge:'عطبرة'}];function filterCat(c){currentCat=c;render();}function filterLoc(l){currentLoc=l;render();}function render(){const s=document.getElementById('search').value.toLowerCase();const box=document.getElementById('products');box.innerHTML='';products.filter(p=>(!currentCat||p.cat==currentCat)&&(!currentLoc||p.loc==currentLoc)&&(!s||p.title.toLowerCase().includes(s))).forEach(p=>{box.innerHTML+=`<div class="bg-white rounded-[20px] shadow border p-4"><div class="flex justify-between mb-2"><span class="bg-[#ffcc00] text-black text-[11px] px-3 py-1 rounded-full font-black">${p.badge}</span><span class="text-xs">${p.loc}</span></div><div class="bg-[#f6f7f0] rounded-2xl h-24 flex items-center justify-center text-5xl mb-2">${p.img}</div><h3 class="font-bold">${p.title}</h3><p class="text-[#1a5c2a] font-black text-xl">${p.price.toLocaleString()} جنيه</p><p class="text-xs text-gray-400">بنكك وفوري - 0112424044</p><a href="https://wa.me/249112424044?text=سلام عايز ${encodeURIComponent(p.title)}" target="_blank" class="mt-2 block bg-[#25D366] text-white text-center p-3 rounded-xl font-black">واتساب 0112424044 📲</a></div>`});}function addProduct(){const t=pTitle.value.trim();const pr=parseInt(pPrice.value);const c=pCat.value;const l=pLoc.value;if(!t||!pr)return alert('اكمل البيانات');let emoji='🐑';if(c=='بقر')emoji='🐄';if(c=='إبل')emoji='🐪';products.unshift({title:t,price:pr,cat:c,phone:MY_PHONE,loc:l,img:emoji,badge:l});addModal.classList.add('hidden');render();}render();</script></body></html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سوق الماشية - سوق التجار المفتوح</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui}
+body{margin:0;background:#f5f7f5;padding-bottom:80px}
+.header{background:#16a34a;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:10}
+.free-banner{background:#fef08a;color:#854d0e;padding:8px;text-align:center;font-weight:bold;font-size:14px}
+.free-banner span{background:#facc15;padding:2px 8px;border-radius:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px #0001;position:relative}
+.card img{width:100%;height:120px;object-fit:cover}
+.badge{position:absolute;top:6px;right:6px;background:#eab308;color:#000;font-size:11px;padding:3px 7px;border-radius:20px;font-weight:bold}
+.card-body{padding:8px}
+.price{color:#16a34a;font-weight:bold}
+.vendor{font-size:11px;color:#666;margin-top:4px;line-height:1.5}
+.btn{display:block;width:100%;background:#16a34a;color:#fff;border:0;padding:8px;border-radius:8px;margin-top:6px;font-weight:bold}
+.btn-outline{background:#fff;color:#16a34a;border:1px solid #16a34a}
+.fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#16a34a;color:#fff;border:0;padding:14px 28px;border-radius:30px;font-size:16px;font-weight:bold;box-shadow:0 4px 12px #0003;z-index:20}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:30;padding:16px}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:400px;padding:16px;max-height:90vh;overflow:auto}
+.modal-box input,.modal-box select{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="header">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div><b>🐑 سوق الماشية</b> <small>سوق التجار</small></div>
+<div style="font-size:11px;background:#ffffff33;padding:4px 8px;border-radius:20px" id="countDown">⏳ باقي 31 يوم مجاني</div>
+</div>
+</div>
+<div class="free-banner">🎉 <span>مجاني</span> النشر مجاني حتى <b id="freeUntilText">18 نوفمبر 2026</b></div>
+<div style="padding:10px 12px 0;display:flex;gap:8px">
+<select id="filterRegion" onchange="render()" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd"><option value="">كل المناطق</option><option>عطبرة</option><option>الدامر</option><option>كردفان</option><option>دارفور</option><option>الجزيرة</option></select>
+<select id="filterType" onchange="render()" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd"><option value="">كل الأنواع</option><option>ضأن</option><option>ماعز</option><option>أبقار</option><option>إبل</option></select>
+</div>
+<div class="grid" id="grid"></div>
+<button class="fab" onclick="openModal()">+ أضف بهيمتك مجاناً</button>
+<div class="modal" id="modal">
+<div class="modal-box">
+<h3 style="margin:0 0 8px">➕ أضف إعلانك المجاني</h3>
+<p style="font-size:12px;color:#666;background:#fef9c3;padding:6px;border-radius:6px">⚠️ إعلانك مجاني حتى 18 نوفمبر 2026</p>
+<input id="f_name" placeholder="اسمك / اسم المزرعة">
+<input id="f_phone" placeholder="رقم واتسابك (0912345678)">
+<select id="f_type"><option>ضأن</option><option>ماعز</option><option>أبقار</option><option>إبل</option></select>
+<select id="f_region"><option>عطبرة</option><option>الدامر</option><option>كردفان</option><option>دارفور</option><option>الجزيرة</option><option>الخرطوم</option></select>
+<input id="f_count" type="number" placeholder="العدد">
+<input id="f_price" type="number" placeholder="سعر الرأس بالجنيه">
+<input id="f_img" placeholder="رابط صورة (اختياري)">
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="btn" style="flex:1" onclick="saveAd()">نشر الآن مجاناً 🚀</button>
+<button class="btn btn-outline" style="flex:1" onclick="closeModal()">إلغاء</button>
+</div>
+</div>
+</div>
+<script>
+const FREE_UNTIL = new Date('2026-11-18T23:59:59');
+document.getElementById('freeUntilText').innerText = FREE_UNTIL.toLocaleDateString('ar-SD',{day:'numeric',month:'long',year:'numeric'});
+let ads = JSON.parse(localStorage.getItem('souq_v2_ads')||'[]');
+if(ads.length===0){
+ads=[
+{id:1,name:'عمار - عطبرة',phone:'0112424044',type:'ضأن',region:'عطبرة',count:10,price:180000,img:'https://images.unsplash.com/photo-1524024973431-2ad916746881?w=500'},
+{id:2,name:'مزرعة البركة - كردفان',phone:'0912345678',type:'ماعز',region:'كردفان',count:5,price:95000,img:'https://images.unsplash.com/photo-1523301343968-6a6976a1d2d7?w=500'},
+{id:3,name:'أبو علي - الدامر',phone:'0922233445',type:'إبل',region:'الدامر',count:2,price:1200000,img:'https://images.unsplash.com/photo-1500463959176-e0869687df26?w=500'},
+];
+}
+function render(){
+const grid=document.getElementById('grid');
+const reg=document.getElementById('filterRegion').value;
+const typ=document.getElementById('filterType').value;
+const filtered=ads.filter(a=>(!reg||a.region===reg)&&(!typ||a.type===typ));
+grid.innerHTML=filtered.map(a=>`
+<div class="card">
+<span class="badge">🎉 مجاني</span>
+<img src="${a.img||'https://images.unsplash.com/photo-1484557985045-edf25e08da73?w=500'}">
+<div class="card-body">
+<div style="font-weight:bold;font-size:13px">${a.type} - ${a.count} رأس</div>
+<div class="price">${Number(a.price).toLocaleString()} جنيه</div>
+<div class="vendor">👤 ${a.name}<br>📍 ${a.region} - 📱 ${a.phone}</div>
+<button class="btn" onclick="contact('${a.phone}','${a.type}')">واتساب التاجر 💬</button>
+</div>
+</div>
+`).join('');
+}
+function contact(phone,type){
+const msg=encodeURIComponent('السلام عليكم، شفت إعلان '+type+' حقك في سوق الماشية، هل متوفر؟');
+window.open('https://wa.me/249'+phone.slice(-9)+'?text='+msg,'_blank');
+}
+function openModal(){document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function saveAd(){
+const ad={
+id:Date.now(),
+name:document.getElementById('f_name').value||'تاجر جديد',
+phone:document.getElementById('f_phone').value||'0112424044',
+type:document.getElementById('f_type').value,
+region:document.getElementById('f_region').value,
+count:document.getElementById('f_count').value||1,
+price:document.getElementById('f_price').value||0,
+img:document.getElementById('f_img').value,
+};
+if(!ad.phone||!ad.price){alert('اكتب رقمك والسعر');return;}
+ads.unshift(ad);
+localStorage.setItem('souq_v2_ads',JSON.stringify(ads));
+closeModal();render();
+alert('تم نشر إعلانك مجاناً! 🎉');
+}
+render();
+const diff=FREE_UNTIL-new Date();const days=Math.max(0,Math.floor(diff/86400000));
+document.getElementById('countDown').innerText='⏳ باقي '+days+' يوم مجاني';
+</script>
+</body>
+</html>
 
