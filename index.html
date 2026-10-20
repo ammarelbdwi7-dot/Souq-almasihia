@@ -3,116 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16a34a">
 <title>سوق الماشية - سوق التجار المفتوح</title>
 <style>
 *{box-sizing:border-box;font-family:system-ui}
 body{margin:0;background:#f5f7f5;padding-bottom:80px}
-.header{background:#16a34a;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:10}
-.free-banner{background:#fef08a;color:#854d0e;padding:8px;text-align:center;font-weight:bold;font-size:14px}
+.header{background:#16a34a;color:#fff;padding:12px 16px;position:sticky;top:0}
+.free-banner{background:#fef08a;color:#854d0e;padding:8px;text-align:center;font-weight:bold}
 .free-banner span{background:#facc15;padding:2px 8px;border-radius:10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
-.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px #0001;position:relative}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+.card{background:#fff;border-radius:12px;overflow:hidden;position:relative}
 .card img{width:100%;height:120px;object-fit:cover}
-.badge{position:absolute;top:6px;right:6px;background:#eab308;color:#000;font-size:11px;padding:3px 7px;border-radius:20px;font-weight:bold}
 .card-body{padding:8px}
-.price{color:#16a34a;font-weight:bold}
-.vendor{font-size:11px;color:#666;margin-top:4px;line-height:1.5}
-.btn{display:block;width:100%;background:#16a34a;color:#fff;border:0;padding:8px;border-radius:8px;margin-top:6px;font-weight:bold}
-.btn-outline{background:#fff;color:#16a34a;border:1px solid #16a34a}
-.fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#16a34a;color:#fff;border:0;padding:14px 28px;border-radius:30px;font-size:16px;font-weight:bold;box-shadow:0 4px 12px #0003;z-index:20}
-.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:30;padding:16px}
-.modal.show{display:flex}
-.modal-box{background:#fff;border-radius:16px;width:100%;max-width:400px;padding:16px;max-height:90vh;overflow:auto}
-.modal-box input,.modal-box select{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
 </style>
 </head>
 <body>
-<div class="header">
-<div style="display:flex;justify-content:space-between;align-items:center">
-<div><b>🐑 سوق الماشية</b> <small>سوق التجار</small></div>
-<div style="font-size:11px;background:#ffffff33;padding:4px 8px;border-radius:20px" id="countDown">⏳ باقي 31 يوم مجاني</div>
-</div>
-</div>
-<div class="free-banner">🎉 <span>مجاني</span> النشر مجاني حتى <b id="freeUntilText">18 نوفمبر 2026</b></div>
-<div style="padding:10px 12px 0;display:flex;gap:8px">
-<select id="filterRegion" onchange="render()" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd"><option value="">كل المناطق</option><option>عطبرة</option><option>الدامر</option><option>كردفان</option><option>دارفور</option><option>الجزيرة</option></select>
-<select id="filterType" onchange="render()" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd"><option value="">كل الأنواع</option><option>ضأن</option><option>ماعز</option><option>أبقار</option><option>إبل</option></select>
-</div>
-<div class="grid" id="grid"></div>
-<button class="fab" onclick="openModal()">+ أضف بهيمتك مجاناً</button>
-<div class="modal" id="modal">
-<div class="modal-box">
-<h3 style="margin:0 0 8px">➕ أضف إعلانك المجاني</h3>
-<p style="font-size:12px;color:#666;background:#fef9c3;padding:6px;border-radius:6px">⚠️ إعلانك مجاني حتى 18 نوفمبر 2026</p>
-<input id="f_name" placeholder="اسمك / اسم المزرعة">
-<input id="f_phone" placeholder="رقم واتسابك (0912345678)">
-<select id="f_type"><option>ضأن</option><option>ماعز</option><option>أبقار</option><option>إبل</option></select>
-<select id="f_region"><option>عطبرة</option><option>الدامر</option><option>كردفان</option><option>دارفور</option><option>الجزيرة</option><option>الخرطوم</option></select>
-<input id="f_count" type="number" placeholder="العدد">
-<input id="f_price" type="number" placeholder="سعر الرأس بالجنيه">
-<input id="f_img" placeholder="رابط صورة (اختياري)">
-<div style="display:flex;gap:8px;margin-top:10px">
-<button class="btn" style="flex:1" onclick="saveAd()">نشر الآن مجاناً 🚀</button>
-<button class="btn btn-outline" style="flex:1" onclick="closeModal()">إلغاء</button>
-</div>
-</div>
-</div>
-<script>
-const FREE_UNTIL = new Date('2026-11-18T23:59:59');
-document.getElementById('freeUntilText').innerText = FREE_UNTIL.toLocaleDateString('ar-SD',{day:'numeric',month:'long',year:'numeric'});
-let ads = JSON.parse(localStorage.getItem('souq_v2_ads')||'[]');
-if(ads.length===0){
-ads=[
-{id:1,name:'عمار - عطبرة',phone:'0112424044',type:'ضأن',region:'عطبرة',count:10,price:180000,img:'https://images.unsplash.com/photo-1524024973431-2ad916746881?w=500'},
-{id:2,name:'مزرعة البركة - كردفان',phone:'0912345678',type:'ماعز',region:'كردفان',count:5,price:95000,img:'https://images.unsplash.com/photo-1523301343968-6a6976a1d2d7?w=500'},
-{id:3,name:'أبو علي - الدامر',phone:'0922233445',type:'إبل',region:'الدامر',count:2,price:1200000,img:'https://images.unsplash.com/photo-1500463959176-e0869687df26?w=500'},
-];
-}
-function render(){
-const grid=document.getElementById('grid');
-const reg=document.getElementById('filterRegion').value;
-const typ=document.getElementById('filterType').value;
-const filtered=ads.filter(a=>(!reg||a.region===reg)&&(!typ||a.type===typ));
-grid.innerHTML=filtered.map(a=>`
-<div class="card">
-<span class="badge">🎉 مجاني</span>
-<img src="${a.img||'https://images.unsplash.com/photo-1484557985045-edf25e08da73?w=500'}">
-<div class="card-body">
-<div style="font-weight:bold;font-size:13px">${a.type} - ${a.count} رأس</div>
-<div class="price">${Number(a.price).toLocaleString()} جنيه</div>
-<div class="vendor">👤 ${a.name}<br>📍 ${a.region} - 📱 ${a.phone}</div>
-<button class="btn" onclick="contact('${a.phone}','${a.type}')">واتساب التاجر 💬</button>
-</div>
-</div>
-`).join('');
-}
-function contact(phone,type){
-const msg=encodeURIComponent('السلام عليكم، شفت إعلان '+type+' حقك في سوق الماشية، هل متوفر؟');
-window.open('https://wa.me/249'+phone.slice(-9)+'?text='+msg,'_blank');
-}
-function openModal(){document.getElementById('modal').classList.add('show')}
-function closeModal(){document.getElementById('modal').classList.remove('show')}
-function saveAd(){
-const ad={
-id:Date.now(),
-name:document.getElementById('f_name').value||'تاجر جديد',
-phone:document.getElementById('f_phone').value||'0112424044',
-type:document.getElementById('f_type').value,
-region:document.getElementById('f_region').value,
-count:document.getElementById('f_count').value||1,
-price:document.getElementById('f_price').value||0,
-img:document.getElementById('f_img').value,
-};
-if(!ad.phone||!ad.price){alert('اكتب رقمك والسعر');return;}
-ads.unshift(ad);
-localStorage.setItem('souq_v2_ads',JSON.stringify(ads));
-closeModal();render();
-alert('تم نشر إعلانك مجاناً! 🎉');
-}
-render();
-const diff=FREE_UNTIL-new Date();const days=Math.max(0,Math.floor(diff/86400000));
-document.getElementById('countDown').innerText='⏳ باقي '+days+' يوم مجاني';
-</script>
+<div class="header"><h1>🐄 سوق الماشية</h1></div>
+<div class="free-banner">🎉 النشر مجاني <span>مجانا</span></div>
+<div class="grid"><div class="card"><div class="card-body">مرحبا بكم في السوق</div></div></div>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}</script>
 </body>
 </html>
-
